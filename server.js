@@ -9,6 +9,7 @@ const express = require('express');
 const app = express();
 
 if (!process.env.DISABLE_XORIGIN) {
+  app.use('/public', express.static(__dirname+'/public'));
   app.use((req, res, next) => {
     const allowedOrigins = ['https://narrow-plane.gomix.me', 'https://www.freecodecamp.com'];
     const origin = req.headers.origin || '*';
