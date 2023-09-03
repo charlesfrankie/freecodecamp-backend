@@ -5,8 +5,9 @@ require('dotenv').config()
 console.log("Hello World")
 
 app.use("/public", express.static(__dirname + "/public"));
-app.use(function(req, res, next) {
-    console.log(req.method+ ' - ' +req.ip);
+app.use(function middlewareFunction(req, res, next) {
+    var string = req.method + " " + req.path + " - " + req.ip;
+    console.log(string);
     next();
 });
 app.get('/', function(req, res) {
