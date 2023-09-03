@@ -6,6 +6,7 @@
 	},
 	"main": "server.js",
 	"scripts": {
+		"deploy": "npm install && npm start",
 		"start": "node server.js"
 	},
 	"repository": {
