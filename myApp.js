@@ -4,14 +4,15 @@ const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => console.log('Database connection is ready...'))
 .catch((err) => console.log(err));
-let Person;
 
-const personSchema  = new mongoose.Schema({
+let Person;
+const Schema = mongoose.Schema;
+const personSchema  = new Schema({
   name: {type: String, required: true},
-  age:  {type: Number, required: false},
-  favoriteFoods: {type: String, required: false}
+  age:  Number,
+  favoriteFoods: [String]
 });
-Person = personSchema;
+Person = mongoose.model("Person", personSchema);
 
 const createAndSavePerson = (done) => {
   done(null /*, data*/);
