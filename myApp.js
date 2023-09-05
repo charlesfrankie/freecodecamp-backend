@@ -1,7 +1,7 @@
 require('dotenv').config();
-let mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGO_URI, { dbName: process.env.DB_NAME, useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => console.log('Database connection is ready...'))
 .catch((err) => console.log(err));
 let Person;
