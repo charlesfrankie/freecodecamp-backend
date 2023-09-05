@@ -32,6 +32,11 @@ app.get('/:word/echo', function(req, res) {
     res.json({"echo": word});
 });
 
+app.get('/name', function(req, res) {
+    let query = req.query;
+    res.json({"name": query.first+" "+query.last});
+});
+
 
 
 
