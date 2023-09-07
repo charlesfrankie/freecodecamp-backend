@@ -97,11 +97,18 @@ router.get("/:_id/logs", (req, res) => {
           .limit(Math.abs(req.query.limit) ?? 0)
           .exec()
           .then((logs) => {
+            modifiedLogs = logs.map((log) => {
+              return {
+                description: log.description,
+                duration: log.duration,
+                date: log.date.toDateString(),
+              };
+            });
             res.json({
               username: user.username,
               count: logs.length,
               _id: user_id,
-              log: logs,
+              log: modifiedLogs,
             });
           });
       } else {
