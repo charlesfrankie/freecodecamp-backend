@@ -48,9 +48,7 @@ router.post("/:_id/exercises", (req, res) => {
           username: user.username,
           description: req.body.description,
           duration: req.body.duration,
-          date: req.body.date
-            ? new Date(req.body.date).toDateString()
-            : new Date(Date.now()).toDateString(),
+          date: req.body.date ?? new Date().toISOString().split("T")[0],
         });
 
         exercise
@@ -61,7 +59,7 @@ router.post("/:_id/exercises", (req, res) => {
               username: data.username,
               description: data.description,
               duration: data.duration,
-              date: data.date,
+              date: new Date(data.date).toDateString(),
             })
           )
           .catch((err) => {
@@ -80,12 +78,23 @@ router.post("/:_id/exercises", (req, res) => {
 // Logs
 router.get("/:_id/logs", (req, res) => {
   var user_id = req.params._id;
+  var filter = {};
 
   User.findById(user_id)
     .then((user) => {
       if (user) {
-        Exercise.find({ username: user.username })
+        filter.username = user.username;
+        if (req.query.from && req.query.to) {
+          filter.date = {
+            $gte: req.query.from,
+            $lte: req.query.to,
+          };
+        }
+
+        Exercise.find(filter)
           .select({ _id: 0, description: 1, duration: 1, date: 1 })
+          .sort({ date: 1 })
+          .limit(Math.abs(req.query.limit) ?? 0)
           .exec()
           .then((logs) => {
             res.json({
